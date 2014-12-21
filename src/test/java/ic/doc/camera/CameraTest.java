@@ -1,13 +1,11 @@
 package ic.doc.camera;
 
-import org.jmock.integration.junit4.JUnitRuleMockery;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CameraTest {
-
-    @Rule
-    public JUnitRuleMockery context = new JUnitRuleMockery();
 
     @Test
     public void switchingTheCameraOnPowersUpTheSensor() {
