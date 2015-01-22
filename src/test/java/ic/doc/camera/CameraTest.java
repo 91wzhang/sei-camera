@@ -41,50 +41,56 @@ public class CameraTest {
     }
     
     @Test
-    public void perssingTheShutterWhenPowerOff() {    	                               
-        camera.powerOff();
-        
+    public void perssingTheShutterWhenPowerOff() {    	                                       
         context.checking(new Expectations() {{
+        	exactly(1).of(sensor).powerDown();
         	never(sensor).readData();
         	never(memoryCard).write(with(any(byte[].class)));
         }});        
         
+        camera.powerOff();        
         camera.pressShutter();
+        context.assertIsSatisfied();
     }
     
     @Test
     public void perssingTheShutterWithPowerOn() {    	   
-        camera.powerOn();
-
         context.checking(new Expectations() {{
-        	oneOf(sensor).readData();
-        	oneOf(memoryCard).write(with(any(byte[].class)));
+        	exactly(1).of(sensor).powerUp();
+        	exactly(1).of(sensor).readData();
+        	exactly(1).of(memoryCard).write(with(any(byte[].class)));
         }});
         
+        camera.powerOn();
         camera.pressShutter();
     }
     
     @Test
-    public void switchingCameraOffWhenWriting() {    	              
-        camera.powerOn();
-        camera.pressShutter();
-        
+    public void switchingCameraOffWhenWriting() {    	                             
         context.checking(new Expectations() {{
+        	exactly(1).of(sensor).powerUp();
+        	exactly(1).of(sensor).readData();
+        	exactly(1).of(memoryCard).write(with(any(byte[].class)));
         	never(sensor).powerDown();
         }});        
         
+        camera.powerOn();
+        camera.pressShutter();
         camera.powerOff();
     }
     
     @Test
     public void powerDownSensorOnceWritingCompleted() {    	        
         context.checking(new Expectations() {{
+        	exactly(1).of(sensor).powerUp();
+        	exactly(1).of(sensor).readData();
+        	exactly(1).of(memoryCard).write(with(any(byte[].class)));
         	never(sensor).powerDown();
         }});
         
         camera.powerOn();
         camera.pressShutter();
-        camera.powerOff();
+        camera.powerOff();                
                         
         context.checking(new Expectations() {{
         	exactly(1).of(sensor).powerDown();

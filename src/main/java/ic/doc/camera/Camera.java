@@ -25,6 +25,7 @@ public class Camera implements WriteListener {
 
 	public void powerOn() {
 		this.sensor.powerUp();
+		this.isPowerOn = true;
 	}
 
 	public void powerOff() {
